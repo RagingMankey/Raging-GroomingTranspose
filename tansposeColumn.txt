@@ -1,0 +1,27 @@
+/** @OnlyCurrentDoc */
+
+/**
+ * The Funtion refenced in this sheet was refernced from link below: 
+ * https://webapps.stackexchange.com/questions/44725/get-value-of-cell-on-the-left-of-current-one 
+ */ 
+
+function BetterTranspose() {
+  
+  var spreadsheet = SpreadsheetApp.getActive();
+  var currentCell = spreadsheet.getCurrentCell();
+
+/** Lines below will Input Function at current cells location
+ * Function Is currently Referncing Cell in Spreadsheet. This is a temp meassure 
+ * as I intent to add a UI Box that will ask user to input how many rows below refernce cell need to be transposed
+ */
+  spreadsheet.getCurrentCell().setFormulaR1C1('=TRANSPOSE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)):INDIRECT(ADDRESS(ROW()+R18C5,COLUMN()-1)))');
+  currentCell.activateAsCurrentCell();
+  
+  /** From Current Cell highlighhts to furthest colums to right
+   * Copies highlighted text and pastes as values
+   * This is just a quick and dirt way to change to text. In newer method the goal would to be capturing all reults and writing as Text value.. Or whatever works works ;)
+   */
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.NEXT).activate();
+  currentCell.activateAsCurrentCell();
+  spreadsheet.getActiveRange().copyTo(spreadsheet.getActiveRange(), SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+};
